@@ -9,10 +9,9 @@ public class MemoryMemberRepo implements MemberRepo {
     private static long seq = 0L;
 
     @Override
-    public Member save(Member member) {
+    public void save(Member member) {
         member.setId(++seq);
         store.put(member.getId(), member);
-        return member;
     }
 
     @Override
@@ -21,12 +20,16 @@ public class MemoryMemberRepo implements MemberRepo {
     }
 
     @Override
-    public Optional<Member> findByName(Long name) {
+    public Optional<Member> findByName(String name) {
         return store.values().stream().filter(member -> member.getName().equals(name)).findAny();
     }
 
     @Override
     public List<Member> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    public void clearStore() {
+        store.clear(); // 메모리 초기화
     }
 }

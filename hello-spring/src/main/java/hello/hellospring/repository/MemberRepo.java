@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepo {
-    Member save(Member member);
+    void save(Member member);
     Optional<Member> findById(Long id); // optional == if val null return null
-    Optional<Member> findByName(Long name);
+    Optional<Member> findByName(String name);
     List<Member> findAll();
+    void clearStore();
 }
