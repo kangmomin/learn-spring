@@ -8,7 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class MemberService {
-    private final MemberRepo memberRepo = new MemoryMemberRepo();
+    private final MemberRepo memberRepo;
+
+//    memberRepo를 초기화하기 위한 생성자.
+    MemberService(MemberRepo memberRepo) {
+        this.memberRepo = memberRepo;
+    }
 
 //    sign up
     public Long join(Member member) {

@@ -1,7 +1,9 @@
 package hello.hellospring.Service;
 
 import hello.hellospring.domain.Member;
+import hello.hellospring.repository.MemoryMemberRepo;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,14 +11,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MemberServiceTest {
-    MemberService memberService = new MemberService();
+    MemberService memberService;
+    MemoryMemberRepo memoryMemberRepo = new MemoryMemberRepo();
+
+//    매 동작 전 memberService의 repo를 쵝화 해줌.
+    @BeforeEach
+    void beforeEach() {
+        MemoryMemberRepo memberRepo = new MemoryMemberRepo();
+        memberService = new MemberService(memberRepo);
+    }
+
     @AfterEach
-    void clearData() {
-//        memberService.
+    void afterEach() {
+        memoryMemberRepo.clearStore();
     }
 
     @Test
-    void join() {
+    void join_user() {
         // given
         Member member = new Member();
         member.setName("hello");
