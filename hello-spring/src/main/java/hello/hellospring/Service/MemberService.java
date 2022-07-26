@@ -2,16 +2,19 @@ package hello.hellospring.Service;
 
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepo;
-import hello.hellospring.repository.MemoryMemberRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberService {
     private final MemberRepo memberRepo;
 
 //    memberRepo를 초기화하기 위한 생성자.
-    MemberService(MemberRepo memberRepo) {
+    @Autowired
+    public MemberService(MemberRepo memberRepo) {
         this.memberRepo = memberRepo;
     }
 
