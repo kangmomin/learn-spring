@@ -4,9 +4,9 @@ import hello.hellospring.Service.MemberService;
 import hello.hellospring.domain.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -36,9 +36,10 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @ResponseBody
     @GetMapping("members")
-    public List<Member> readAllUser() {
-        return memberService.findMembers();
+    public String list(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+        return "members/memberList";
     }
 }
