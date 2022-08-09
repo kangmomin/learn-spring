@@ -3,12 +3,14 @@ package hello.hellospring.Service;
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 //@Service
+// 데이터를 저장 변경시엔 트랜잭션이 필요함.
+@Transactional
 public class MemberService {
     private final MemberRepo memberRepo;
 
