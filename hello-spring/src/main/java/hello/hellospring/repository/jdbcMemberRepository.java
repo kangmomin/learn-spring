@@ -91,11 +91,6 @@ public class jdbcMemberRepository implements MemberRepo {
     }
 
     @Override
-    public void clearStore() {
-//        store.clear();
-    }
-
-    @Override
     public Optional<Member> findByName(String name) {
         String sql = "select * from member where name = ?";
         Connection conn = null;

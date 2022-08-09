@@ -1,7 +1,6 @@
 package hello.hellospring.repository;
 
 import hello.hellospring.domain.Member;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,10 +10,10 @@ class MemoryMemberRepoTest {
     MemberRepo repo = new MemoryMemberRepo();
 
     // 각 테스트가 끝날 때 마다 repository를 clear해주기.
-    @AfterEach
-    public void afterEach() {
-        repo.clearStore();
-    }
+//    @AfterEach
+//    public void afterEach() {
+//        repo.clearStore();
+//    }
 
     @Test
     public void save() {

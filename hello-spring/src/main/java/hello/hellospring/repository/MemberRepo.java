@@ -10,5 +10,4 @@ public interface MemberRepo {
     Optional<Member> findById(Long id); // optional == if val null return null
     Optional<Member> findByName(String name);
     List<Member> findAll();
-    void clearStore();
 }
