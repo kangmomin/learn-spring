@@ -2,6 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="hello-spring" target="17" />
+      <module name="hello-spring.main" target="17" />
+      <module name="hello-spring.test" target="17" />
       <module name="sql" target="18" />
     </bytecodeTargetLevel>
   </component>
