@@ -10,10 +10,20 @@ import hello.core.order.OrderServiceImpl;
 public class AppConfig {
 
     public MemberService memberService() {
-        return new MemberServiceImpl(new MemoryMemberRepo());
+
+        return new MemberServiceImpl(memberRepo());
+    }
+
+    private static MemoryMemberRepo memberRepo() {
+        return new MemoryMemberRepo();
     }
 
     public OrderService orderService() {
-        return new OrderServiceImpl(new MemoryMemberRepo(), new FixDiscountPolicy());
+
+        return new OrderServiceImpl(memberRepo(), discountPolicy());
+    }
+
+    private static FixDiscountPolicy discountPolicy() {
+        return new FixDiscountPolicy();
     }
 }
