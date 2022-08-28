@@ -1,5 +1,8 @@
 package hello.core;
 
+import hello.core.member.MemberRepo;
+import hello.core.member.MemoryMemberRepo;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -13,5 +16,11 @@ import static org.springframework.context.annotation.ComponentScan.*;
         excludeFilters = @Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
 )
 public class AutoAppConfig {
-
+//    수동 빈 등록 vs 자동 빈 등록
+//    수동 빈이 우선권을 가져가 에러가 나지 않음.
+//    하지만 최근 버전의 스프링 부트는 에러가 나도록 바뀜.
+    @Bean(name = "memoryMemberRepo")
+    public MemberRepo memberRepo() {
+        return new MemoryMemberRepo();
+    }
 }
