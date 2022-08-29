@@ -26,7 +26,7 @@ public class ApplicationContextSameBeanFindTest {
     @DisplayName("타입으로 조회시 같은 타입이 둘 이상 있을 경우 빈의 이름을 지정하면 된다")
     void findBeanByName() {
         ac.getBean("memberRepo1", MemberRepo.class);
-        assertThat(NoUniqueBeanDefinitionException.class).isInstanceOf(MemberRepo.class);
+        assertThat(NoUniqueBeanDefinitionException.class).isNotInstanceOf(MemberRepo.class);
     }
 
     @Test
