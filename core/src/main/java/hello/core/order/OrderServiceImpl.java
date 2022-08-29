@@ -16,7 +16,7 @@ public class OrderServiceImpl implements OrderService {
 
     // DiscountPolicy가 두개일 시 필드 명, 파라티머 명과 같은 결곽 값을 가져온다.
     @Autowired
-    public OrderServiceImpl(MemberRepo memberRepo, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepo memberRepo, DiscountPolicy discountPolicy) {
         this.memberRepo = memberRepo;
         this.discountPolicy = discountPolicy;
     }
