@@ -3,20 +3,14 @@ package hello.core.order;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor // final private 변수를 생성자로 만들어줌.(Lombok)
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepo memberRepo;
-
-    @Autowired
-    public OrderServiceImpl(MemberRepo memberRepo, DiscountPolicy discountPolicy) {
-        this.memberRepo = memberRepo;
-        this.discountPolicy = discountPolicy;
-    }
-
     private final DiscountPolicy discountPolicy;
     
     @Override
