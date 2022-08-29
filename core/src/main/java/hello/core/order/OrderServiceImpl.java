@@ -1,10 +1,10 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +16,7 @@ public class OrderServiceImpl implements OrderService {
 
     // DiscountPolicy가 두개일 시 필드 명, 파라티머 명과 같은 결곽 값을 가져온다.
     @Autowired
-    public OrderServiceImpl(MemberRepo memberRepo, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepo memberRepo, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepo = memberRepo;
         this.discountPolicy = discountPolicy;
     }
