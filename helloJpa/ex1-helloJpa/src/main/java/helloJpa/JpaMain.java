@@ -20,9 +20,8 @@ public class JpaMain {
 
         try {
             // jpa와 관련 없는 비영속 상태
-            Member member = new Member();
-            member.setId(1L);
-            member.setName("hello");
+            Member member1 = new Member(5L, "A");
+            Member member2 = new Member(6L, "B");
             // jpa와 관련 없는 비영속 상태
 
             Member findMember = em.find(Member.class, 1L);
@@ -36,10 +35,15 @@ public class JpaMain {
             // 영속성
             // em에 저장해서 한번에 주기에 트랜젝션만 같다면 ==값을 던져줌.
             // commit전까진 쿼리를 보내지 않음.
-            em.persist(member);
+            em.persist(member1);
+            em.persist(member2);
 
             // em에 저장된 값들의 쿼리를 날림.
             // em에 모았다 한번에 보낸다.
+
+            // 아래 flush함수가 쿼리를 날리는 코드임.(
+            // 영속성 컨택스트를 비우지 않고 DB와 동기화하는 작업
+//            em.flush();
             tx.commit();
         } catch (Exception e) {
             System.out.println("e = " + e);
