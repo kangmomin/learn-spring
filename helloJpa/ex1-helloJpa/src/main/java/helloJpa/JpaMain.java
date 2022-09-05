@@ -20,8 +20,8 @@ public class JpaMain {
 
         try {
             // jpa와 관련 없는 비영속 상태
-            Member member1 = new Member(5L, "A");
-            Member member2 = new Member(6L, "B");
+            Member member1 = new Member("A");
+            Member member2 = new Member("B");
             // jpa와 관련 없는 비영속 상태
 
             Member findMember = em.find(Member.class, 1L);
