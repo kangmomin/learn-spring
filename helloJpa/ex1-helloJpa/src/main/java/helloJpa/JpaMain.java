@@ -20,12 +20,15 @@ public class JpaMain {
 
             Member1 member1 = new Member1();
             member1.setName("member1");
-//            member1.setTeamId(team.getId());
+            // jpa는 주인 값만 보기에 team의 members는 수정을 해도 상관치 않는다.
+            // 하지만 db에서 데이터를 새로 뽑지 않는 이상 team의 members에는 새로운 변경하상이 존재하지 않기에
+            // 둘 다 추가해 주는 쪽을 추천한다.
             member1.setTeam(team);
             em.persist(member1);
 
-            Member1 findMember = em.find(Member1.class, member1.getId());
+//            team.getMembers().add(member1);
 
+            Member1 findMember = em.find(Member1.class, member1.getId());
             List<Member1> members = findMember.getTeam().getMembers();
             for (Member1 m : members) {
                 System.out.println("m.getName() = " + m.getName());
