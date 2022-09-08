@@ -15,7 +15,7 @@ public class Member1 {
 
     // join으로 team 객체를 바로 갖다줌.
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", insertable = false, updatable = false)
     private Team team;
 
     public Long getId() {
