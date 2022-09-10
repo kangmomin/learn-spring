@@ -6,12 +6,12 @@ import javax.persistence.*;
 public class OrderItem {
 
     @Id @GeneratedValue
-    @Column(name = "order_item_id")
+    @Column(name = "orderItem_id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order oreder;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
@@ -27,12 +27,12 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Order getOreder() {
-        return oreder;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOreder(Order oreder) {
-        this.oreder = oreder;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Item getItem() {
