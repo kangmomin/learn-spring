@@ -3,7 +3,7 @@ package helloJpa;
 import javax.persistence.*;
 
 @Entity
-public class Member1 {
+public class Member1 extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
@@ -22,6 +22,7 @@ public class Member1 {
     @OneToOne
     @JoinColumn(name = "locker_id")
     private Locker locker;
+
 
     public Long getId() {
         return id;

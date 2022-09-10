@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Team {
+@Entity
+public class Team extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "team_id")
     private Long id;
