@@ -13,14 +13,13 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 프록시 객체
-            Member1 member = em.find(Member1.class, 1L);
-            // id값을 호출
-            System.out.println("member.getId() = " + member.getId());
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            // member조회시 Team객체를 join하여 값을 가져옴.
-            // EAGER라면 생성시 부터 값을 가져옴
-            System.out.println("member.getTeam().getClass() = " + member.getTeam().getClass());
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
             tx.commit();
         } catch (Exception e) {
             System.out.println("e = " + e);
