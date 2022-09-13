@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.time.LocalDateTime;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -14,9 +13,14 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member1 member = new Member1();
-            member.setCreatedBy("aaa");
-            member.setCreateDate(LocalDateTime.now());
+            // 프록시 객체
+            Member1 member = em.find(Member1.class, 1L);
+            // id값을 호출
+            System.out.println("member.getId() = " + member.getId());
+
+            // member조회시 Team객체를 join하여 값을 가져옴.
+            // EAGER라면 생성시 부터 값을 가져옴
+            System.out.println("member.getTeam().getClass() = " + member.getTeam().getClass());
             tx.commit();
         } catch (Exception e) {
             System.out.println("e = " + e);
