@@ -2,7 +2,7 @@ package helloJpa;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 public class Member {
@@ -26,11 +26,9 @@ public class Member {
     @Enumerated(EnumType.STRING) // EnumType.ORDINAL == Enum순서 저장, String == 이름 그대로 저장 << String 추천
     private RoleType roleType;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     // 둘다 date지만 최근 아래의 타입은 하이버네이트에서도 지원해줌.
     private LocalDateTime testLocalData;
@@ -40,8 +38,7 @@ public class Member {
 
     @Transient // 매핑 하지 않음.
     private String onlyMemory;
-
-
+    
     public Member() {
     }
 }

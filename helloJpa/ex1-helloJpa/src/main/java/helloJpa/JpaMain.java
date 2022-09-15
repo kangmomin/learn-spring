@@ -16,8 +16,16 @@ public class JpaMain {
 
             Member1 m = new Member1();
 
+            m.setName("hello");
             m.setHomeAddress(new Address("city", "street", "zipcode"));
-            m.setWorkPeriod(new Period());
+            m.getFavorite().add("치킨");
+            m.getFavorite().add("족발");
+            m.getFavorite().add("피자");
+            m.getFavorite().add("etc");
+
+            m.getAddressHistory().add(new Address("city1", "street", "zipcode"));
+            m.getAddressHistory().add(new Address("city2", "street", "zipcode"));
+            m.getAddressHistory().add(new Address("city3", "street", "zipcode"));
 
             em.persist(m);
 
