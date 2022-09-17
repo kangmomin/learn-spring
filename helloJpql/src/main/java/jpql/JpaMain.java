@@ -12,20 +12,26 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setName("member1");
-            member.setAge(10);
-            em.persist(member);
+            for (int i = 0; i < 100; i++) {
+                Member member = new Member();
+                member.setName("member" + i);
+                member.setAge(i);
+                em.persist(member);
+            }
 
             em.flush();
             em.clear();
 
-            List<MemberDTO> resultList = em.createQuery("select new jpql.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
-                    .getResultList(); // DTO를 활용한 스칼라 타입 프로젝션 처리
+            List<Member> result = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(0)
+                    .setMaxResults(10)
+                    .getResultList();
 
-            MemberDTO memberDTO = resultList.get(0);
-            System.out.println("memberDTO.getUsername = " + memberDTO.getUsername());
-            System.out.println("memberDTO.getAge = " + memberDTO.getAge());
+            System.out.println("result size: " + result.size());
+            for (Member member1 : result) {
+                System.out.println("member1.toString() = " + member1.toString());
+            }
+
 
             tx.commit();
         } catch (NonUniqueResultException e) {
@@ -33,7 +39,7 @@ public class JpaMain {
             System.out.println("single result에 list가 발견됨");
             System.out.println("e = " + e);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("[error] with:"+e);
         } finally {
             em.close();
         }
