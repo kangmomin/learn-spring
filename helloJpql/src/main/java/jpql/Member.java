@@ -12,7 +12,7 @@ public class Member {
     private int age;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", nullable = true)
     private Team team;
 
     public Long getId() {
@@ -37,5 +37,14 @@ public class Member {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void changeTeam(Team team) {
+        this.team = team;
+        team.getMembers().add(this);
     }
 }
