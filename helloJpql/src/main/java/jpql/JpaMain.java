@@ -14,15 +14,18 @@ public class JpaMain {
         try {
             Member member = new Member();
             member.setName("member1");
+            member.setAge(10);
             em.persist(member);
 
-            TypedQuery<Member> query = em.createQuery("select m from Member as m where m.name = :username", Member.class); // 반황 타입이 명확할 때
-            query.setParameter("username", "member1");
+            em.flush();
+            em.clear();
 
-            Query query1 = em.createQuery("select m.name, m.age from Member as m"); // 반환 타입이 명확하지 않을 때
+            List<MemberDTO> resultList = em.createQuery("select new jpql.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
+                    .getResultList(); // DTO를 활용한 스칼라 타입 프로젝션 처리
 
-            List<Member> resultList = query.getResultList();
-            System.out.println("resultList = " + resultList);
+            MemberDTO memberDTO = resultList.get(0);
+            System.out.println("memberDTO.getUsername = " + memberDTO.getUsername());
+            System.out.println("memberDTO.getAge = " + memberDTO.getAge());
 
             tx.commit();
         } catch (NonUniqueResultException e) {
