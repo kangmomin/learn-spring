@@ -13,16 +13,31 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
 
-            Member member = new Member();
-            member.setName(null);
-            member.setAge(20);
-            member.changeTeam(team);
+            Member member1 = new Member();
+            member1.setName("회원1");
+            member1.setAge(20);
+            member1.changeTeam(teamA);
+            em.persist(member1);
 
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setName("회원2");
+            member2.setAge(20);
+            member2.changeTeam(teamA);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setName("회원3");
+            member3.setAge(20);
+            member3.changeTeam(teamB);
+            em.persist(member3);
+
 
             em.flush();
             em.clear();
@@ -39,10 +54,11 @@ public class JpaMain {
             // 묵시적 조인이 발생하는 갑들. 걍 쓰지 마삼.
             // m.team과 같이 묵시적 조인이 발생하고 그 하위로 더 많은 값을 읽을 수 있는 것을 단일 값 연관 경로라고 함.
             // 컬랙션 값의 경우 size를 제외한 값을 탐색할 수 없음
-            String query = "select m.name From Member m "; // custom function
-            List<String> resultList = em.createQuery(query, String.class).getResultList();
-            for (String s : resultList) {
-                System.out.println("s = " + s);
+            String query = "select distinct t From Team t join fetch t.membersf"; // custom function
+            List<Member> resultList1 = em.createQuery(query, Member.class)
+                    .getResultList();
+            for (Member member : resultList1) {
+                System.out.println("member = " + member.getName());
             }
 
             tx.commit();
