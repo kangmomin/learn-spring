@@ -28,9 +28,14 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<Member> result = em.createQuery("select m from Member m left join m.team t on t.name = :teamName", Member.class)
-                    .setParameter("teamName", "team1")
+            String query = "select m.name, 'HELLO', TRUE from Member m" +
+                    " where m.type = :userType";
+            List result = em.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
                     .getResultList();
+            for (Object o : result) {
+                System.out.println("o = " + o);
+            }
 
             tx.commit();
         } catch (NonUniqueResultException e) {
