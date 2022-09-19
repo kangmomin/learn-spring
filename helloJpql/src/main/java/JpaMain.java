@@ -58,8 +58,10 @@ public class JpaMain {
             // fetch join은 별칭을 줘선 안됨. 애초에 값을 모두 가져오는 것을 전제로 하기에 어떤 변수가 일어날지 모름.
 
             // 일반적으로 엔티티와 같은 결과를 도출하면 패치 아니면 DTO가 좋음.
-            String query = "select t From Team t"; // custom function
+            String query = "select m From Member m where m.id = :member"; // custom function
+            // 엔티티를 파라매터로 넘길 수 있음. 외래키도 가능
             List<Member> resultList1 = em.createQuery(query, Member.class)
+                    .setParameter("member", member1)
                     .getResultList();
             for (Member member : resultList1) {
                 System.out.println("member = " + member.getName());
