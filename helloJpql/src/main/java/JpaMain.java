@@ -54,7 +54,11 @@ public class JpaMain {
             // 묵시적 조인이 발생하는 갑들. 걍 쓰지 마삼.
             // m.team과 같이 묵시적 조인이 발생하고 그 하위로 더 많은 값을 읽을 수 있는 것을 단일 값 연관 경로라고 함.
             // 컬랙션 값의 경우 size를 제외한 값을 탐색할 수 없음
-            String query = "select distinct t From Team t join fetch t.membersf"; // custom function
+            // 페이징 API 사용 불가. 일대다 패치시 데이터 뻥튀기 때문
+            // fetch join은 별칭을 줘선 안됨. 애초에 값을 모두 가져오는 것을 전제로 하기에 어떤 변수가 일어날지 모름.
+
+            // 일반적으로 엔티티와 같은 결과를 도출하면 패치 아니면 DTO가 좋음.
+            String query = "select t From Team t"; // custom function
             List<Member> resultList1 = em.createQuery(query, Member.class)
                     .getResultList();
             for (Member member : resultList1) {

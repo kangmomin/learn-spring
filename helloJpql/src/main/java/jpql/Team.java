@@ -1,5 +1,7 @@
 package jpql;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,9 @@ public class Team {
     @Column(name = "team_id")
     private Long id;
 
+    // LAZE일 때 한번에 100개의 값을 들고옴.
+    // 다른 값이어도 가능, 글로벌 세팅도 가능(추천), 1000이하의 값
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 
