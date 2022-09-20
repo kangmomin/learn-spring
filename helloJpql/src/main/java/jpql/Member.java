@@ -3,8 +3,16 @@ package jpql;
 import javax.persistence.*;
 
 @Entity
+
+// 쿼리를 미리 정해두고 쓸 수 있음. 로딩 시점에 파싱을 하기 때문에 쿼리 에러를 잡기 좋다.
+@NamedQuery(
+        name = "findByUserName",
+        query = "select m from Member m where m.name = :username"
+)
+
 public class Member {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "member_id")
     private Long id;
 
