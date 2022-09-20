@@ -42,13 +42,12 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List resultList = em.createNamedQuery("findByUserName")
-                    .setParameter("username", "회원1")
-                    .getResultList();
-
-            for (Object o : resultList) {
-                System.out.println("o = " + o);
-            }
+            // 자동 flush
+            // 벌크 연산 - 많은 업데이트를 한번에 실행시켜줌.
+            // 영속성 컨택스트를 무시함.
+            // 영속성 컨택스트를 지우거나 벌크 연산만 먼저 실행
+            int resultCouont = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
 
             tx.commit();
         } catch (NonUniqueResultException e) {
