@@ -1,7 +1,5 @@
 package com.jpabook.jpashop.domain;
 
-import com.jpabook.jpashop.domain.item.Address;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
