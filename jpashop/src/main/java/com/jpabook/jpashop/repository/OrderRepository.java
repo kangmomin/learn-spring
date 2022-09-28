@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class OrderRepository {
 
     private final EntityManager em;
