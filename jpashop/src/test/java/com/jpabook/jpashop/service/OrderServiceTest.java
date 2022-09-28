@@ -5,8 +5,8 @@ import com.jpabook.jpashop.domain.Member;
 import com.jpabook.jpashop.domain.Order;
 import com.jpabook.jpashop.domain.OrderStatus;
 import com.jpabook.jpashop.domain.item.Book;
+import com.jpabook.jpashop.exeption.NotEnoughStockExeption;
 import com.jpabook.jpashop.repository.OrderRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static org.assertj.core.api.Assert.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -28,15 +27,10 @@ class OrderServiceTest {
 
     @Test
     public void 상품주문() {
-        Member member = new Member();
-        member.setName("a");
-        member.setAddress(new Address("서울", "강가", "123-123"));
+        Member member = createMember("a");
         em.persist(member);
 
-        Book book = new Book();
-        book.setName("jpa");
-        book.setPrice(10000);
-        book.setStockQuantity(10);
+        Book book = createBook("jpa", 10000, 10);
         em.persist(book); // book은 cascade가 적용되지 않았음
 
         int orderCount = 2;
@@ -51,13 +45,50 @@ class OrderServiceTest {
         assertEquals(8, book.getStockQuantity());
     }
 
+    private static Book createBook(String name, int price, int stockQuantity) {
+        Book book = new Book();
+        book.setName(name);
+        book.setPrice(price);
+        book.setStockQuantity(stockQuantity);
+        return book;
+    }
+
+    private static Member createMember(String name) {
+        Member member = new Member();
+        member.setName(name);
+        member.setAddress(new Address("서울", "강가", "123-123"));
+        return member;
+    }
+
     @Test
     public void 상품주문_재고수량초과() {
+        Member member = createMember("a");
+        em.persist(member);
 
+        Book book = createBook("jpa", 10000, 10);
+        em.persist(book);
+
+        int orderCount = 11;
+
+        assertThrows(NotEnoughStockExeption.class, () -> {
+            orderService.order(member.getId(), book.getId(), orderCount);
+            fail("재고 수량 부족 예외가 발생해야 한다.");
+        });
     }
 
     @Test
     public void 주문취소() {
+        Member member = createMember("a");
+        Book book = createBook("시골 JPA", 10000, 10);
+
+        Long orderId = orderService.order(member.getId(), book.getId(), 2);
+
+        orderService.cancelOrder(orderId);
+
+        Order getOrder = orderRepository.findOne(orderId);
+
+        assertEquals(OrderStatus.CANCEL, getOrder.getStatus());
+        assertEquals(10, book.getStockQuantity());
 
     }
 
