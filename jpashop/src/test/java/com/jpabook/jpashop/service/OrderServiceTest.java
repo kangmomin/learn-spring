@@ -81,6 +81,9 @@ class OrderServiceTest {
         Member member = createMember("a");
         Book book = createBook("시골 JPA", 10000, 10);
 
+        em.persist(member);
+        em.persist(book);
+
         Long orderId = orderService.order(member.getId(), book.getId(), 2);
 
         orderService.cancelOrder(orderId);
