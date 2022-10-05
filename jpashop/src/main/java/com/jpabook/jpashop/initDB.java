@@ -39,8 +39,6 @@ public class initDB {
 
             OrderItem orderItem1 = OrderItem.createOrderItem(book1, 10000, 1);
             OrderItem orderItem2 = OrderItem.createOrderItem(book2, 20000, 2);
-            em.persist(orderItem1);
-            em.persist(orderItem2);
 
             Delivery delivery = new Delivery();
             delivery.setAddress(member.getAddress());
@@ -70,8 +68,6 @@ public class initDB {
 
             OrderItem orderItem1 = OrderItem.createOrderItem(book1, 40000, 1);
             OrderItem orderItem2 = OrderItem.createOrderItem(book2, 50000, 2);
-            em.persist(orderItem1);
-            em.persist(orderItem2);
 
             Delivery delivery = new Delivery();
             delivery.setAddress(member.getAddress());
