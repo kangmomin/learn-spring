@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 @RequiredArgsConstructor
 public class initDB {
 
-    private InitServer initServer;
+    private final InitServer initServer;
 
     @PostConstruct
     public void init() {
@@ -28,29 +28,33 @@ public class initDB {
 
         private final EntityManager em;
         public void dbInit() {
-            Member member1 = createMember("member a");
+            Member member = createMember("member a");
 
-            em.persist(member1);
+            em.persist(member);
 
-            Book book1 = createBook();
-
-            Book book2 = createBook();
+            Book book1 = createBook("test1", 10000, 1000);
+            Book book2 = createBook("test2", 10000, 100);
+            em.persist(book1);
+            em.persist(book2);
 
             OrderItem orderItem1 = OrderItem.createOrderItem(book1, 10000, 1);
             OrderItem orderItem2 = OrderItem.createOrderItem(book2, 20000, 2);
+            em.persist(orderItem1);
+            em.persist(orderItem2);
 
             Delivery delivery = new Delivery();
-            delivery.setAddress(member1.getAddress());
+            delivery.setAddress(member.getAddress());
+            em.persist(delivery);
 
-            Order order = Order.createOrder(member1, delivery, orderItem1, orderItem2);
+            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);
         }
 
-        private static Book createBook() {
+        private static Book createBook(String name, int price, int stockQuantity) {
             Book book1 = new Book();
-            book1.setName("testBook");
-            book1.setPrice(1234);
-            book1.setStockQuantity(100);
+            book1.setName(name);
+            book1.setPrice(price);
+            book1.setStockQuantity(stockQuantity);
             return book1;
         }
 
@@ -59,15 +63,19 @@ public class initDB {
 
             em.persist(member);
 
-            Book book1 = createBook();
+            Book book1 = createBook("test3", 40000, 1000);
+            Book book2 = createBook("test4", 25000, 100);
+            em.persist(book1);
+            em.persist(book2);
 
-            createBook();
-
-            OrderItem orderItem1 = OrderItem.createOrderItem(book1, 10000, 1);
-            OrderItem orderItem2 = OrderItem.createOrderItem(book1, 20000, 2);
+            OrderItem orderItem1 = OrderItem.createOrderItem(book1, 40000, 1);
+            OrderItem orderItem2 = OrderItem.createOrderItem(book2, 50000, 2);
+            em.persist(orderItem1);
+            em.persist(orderItem2);
 
             Delivery delivery = new Delivery();
             delivery.setAddress(member.getAddress());
+            em.persist(delivery);
 
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);

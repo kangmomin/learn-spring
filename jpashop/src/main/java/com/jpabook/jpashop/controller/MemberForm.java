@@ -3,7 +3,6 @@ package com.jpabook.jpashop.controller;
 import lombok.Getter;
 import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter @Setter
 public class MemberForm {
