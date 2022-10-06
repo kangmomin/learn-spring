@@ -5,6 +5,8 @@ import com.jpabook.jpashop.domain.Order;
 import com.jpabook.jpashop.domain.OrderStatus;
 import com.jpabook.jpashop.repository.OrderRepository;
 import com.jpabook.jpashop.repository.OrderSearch;
+import com.jpabook.jpashop.repository.order.simpleQuery.OrderSimpleQueryDto;
+import com.jpabook.jpashop.repository.order.simpleQuery.OrderSimpleQueryRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class OrderSimpleApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     @GetMapping("/api/v1/simple-orders")
     public List<Order> ordersV1() {
@@ -47,12 +50,21 @@ public class OrderSimpleApiController {
         return new Result(collect);
     }
 
+    // 성능이 v4보다는 낮지만 재사용이 요잉함
     @GetMapping("/api/v3/simple-orders")
     public Result ordersV3() {
         List<Order> findOrder = orderRepository.findAllWithMemberDelivery();
         List<SimpleOrderDto> result = findOrder.stream()
                 .map(SimpleOrderDto::new)
                 .collect(Collectors.toList()); // 지연로딩을 없애고 쿼리 양을 줄임
+
+        return new Result(result);
+    }
+
+    // 성능은 좋으나 재사용이 힘듦
+    @GetMapping("/api/v4/simple-orders")
+    public Result ordersV4() {
+        List<OrderSimpleQueryDto> result = orderSimpleQueryRepository.findOrderDtos();
 
         return new Result(result);
     }

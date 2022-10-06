@@ -4,7 +4,6 @@ import com.jpabook.jpashop.domain.Member;
 import com.jpabook.jpashop.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -60,4 +59,5 @@ public class OrderRepository {
 
         return resultList;
     }
+
 }
