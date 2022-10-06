@@ -50,4 +50,14 @@ public class OrderRepository {
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000); //최대 1000건
         return query.getResultList();
     }
+
+    public List<Order> findAllWithMemberDelivery() {
+        List<Order> resultList = em.createQuery(
+                "select o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d ", Order.class
+        ).getResultList();
+
+        return resultList;
+    }
 }

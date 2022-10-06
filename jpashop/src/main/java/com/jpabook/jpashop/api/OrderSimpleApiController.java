@@ -47,6 +47,16 @@ public class OrderSimpleApiController {
         return new Result(collect);
     }
 
+    @GetMapping("/api/v3/simple-orders")
+    public Result ordersV3() {
+        List<Order> findOrder = orderRepository.findAllWithMemberDelivery();
+        List<SimpleOrderDto> result = findOrder.stream()
+                .map(SimpleOrderDto::new)
+                .collect(Collectors.toList()); // 지연로딩을 없애고 쿼리 양을 줄임
+
+        return new Result(result);
+    }
+
     @Data
     static class SimpleOrderDto {
         private Long orderId;
