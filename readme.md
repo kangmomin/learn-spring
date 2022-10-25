@@ -14,6 +14,8 @@
 **영속성 전의**
 
 **OneToMany ManyToOne == 사용처 기준To-**
+- ToOne관계는 모두 lazy설정
+- FK를 가진 쪽에서 Join
 
 **준영속 상태**
 - 영속 상태에서 벗어난 엔티티이나 고유 식별자(PK)가 존재함.
@@ -49,3 +51,5 @@
 
 이럴땐 그냥 Service를 다시 만들든 해서 readOnly인 트랜잭션 안에서 돌아가게 한다.
 그 상태에서 DTO로 변환하는 것. 커넥션을 많이 쓴다면 ON(ex: ADMIN) 많이 쓴다면 OFF(ex: Member)
+
+**NoArgumentConstructure**
