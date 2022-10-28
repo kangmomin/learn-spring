@@ -1,6 +1,5 @@
 package study.datajpa.repository;
 
-import jdk.jfr.Percentage;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -170,7 +169,6 @@ class MemberRepositoryTest {
         Page<Member> page = memberRepository.findByAge(age, pr);
 
         List<Member> content = page.getContent();
-        long totalElements = page.getTotalElements();
 
         assertThat(content.size()).isEqualTo(3);
         assertThat(page.getTotalElements()).isEqualTo(5);
@@ -214,5 +212,30 @@ class MemberRepositoryTest {
         int resultCount = memberRepository.bulkAgePlus(20);
 
         assertThat(resultCount).isEqualTo(3);
+    }
+
+    @Test
+    public void findMemberLazy() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member memberA = new Member("memberA", 10, teamA);
+        Member memberB = new Member("memberB", 10, teamB);
+
+        memberRepository.save(memberA);
+        memberRepository.save(memberB);
+
+        em.flush();
+        em.clear();
+
+        List<Member> all = memberRepository.findAll();
+        for (Member member : all) {
+            System.out.println("member = " + member);
+            System.out.println("member.getTeam().getName() = " + member.getTeam().getName());
+            System.out.println("member.getTeam().getClass() = " + member.getTeam().getClass());
+        }
     }
 }
