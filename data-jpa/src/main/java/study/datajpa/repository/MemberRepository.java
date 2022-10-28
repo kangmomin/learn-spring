@@ -3,14 +3,13 @@ package study.datajpa.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,5 +48,13 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Override
     @EntityGraph(attributePaths = {"team"})
+    // 큰 차이를 내지 못함으로 테스트 후 적용
+    // 영속성 컨텍스트에 원본값의 스냅샷으로 값의 변동을 체크하는데
+    // 스냅샷을 값을 가져올 때 찍음. readOnly를 설정하면 해당 스냅샷을 생성치 않으며 성능 최적화를 해줌
+    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
     List<Member> findAll();
+
+    // 자세한 설명은 jpa책,,,
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<Member> findLockByUsername(String username);
 }
