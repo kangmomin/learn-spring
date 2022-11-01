@@ -54,8 +54,7 @@ public class QuerydslBasicTest {
     @Test
     public void startDsl() {
         JPQLQueryFactory query = new JPAQueryFactory(em);
-        QMember m = new QMember("m");
-
+        QMember m = new QMember("m"); // as m으로 query를 짜줌. 같은 테이블을 조인할 때 사용
 
         Member result = query.select(m)
                 .from(m)
