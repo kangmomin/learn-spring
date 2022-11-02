@@ -53,3 +53,4 @@
 그 상태에서 DTO로 변환하는 것. 커넥션을 많이 쓴다면 ON(ex: ADMIN) 많이 쓴다면 OFF(ex: Member)
 
 **NoArgumentConstructure**
+**groupBy, having**
