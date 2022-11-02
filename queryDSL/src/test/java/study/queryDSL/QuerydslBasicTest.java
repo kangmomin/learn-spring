@@ -1,7 +1,6 @@
 package study.querydsl;
 
 import com.querydsl.core.QueryResults;
-import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +12,7 @@ import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import java.util.List;
 
@@ -23,12 +23,15 @@ import static study.querydsl.entity.QMember.*;
 @Transactional
 public class QuerydslBasicTest {
 
-    @Autowired
+    @PersistenceContext
     EntityManager em;
-    JPQLQueryFactory query = new JPAQueryFactory(em);
+
+    JPAQueryFactory query;
 
     @BeforeEach
     public void before() {
+         query = new JPAQueryFactory(em);
+
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
 
@@ -86,8 +89,8 @@ public class QuerydslBasicTest {
         List<Member> fetch = query.selectFrom(member)
                 .fetch();
 
-        Member member1 = query.selectFrom(member)
-                .fetchOne();
+//        Member member1 = query.selectFrom(member)
+//                .fetchOne();
 
         Member member2 = query.selectFrom(member)
                 .fetchFirst();
@@ -103,5 +106,32 @@ public class QuerydslBasicTest {
         // count 쿼리
         long l = query.selectFrom(member)
                 .fetchCount();
+    }
+
+    /**
+     * 회원 정렬 순서
+     * 1. 회원 나이 내림차순(desc)
+     * 2. 회원 이름 올림차순(asc)
+     * 단 2에서 회원 이름이 없으면 마지막에 출력(nulls)
+     */
+    @Test
+    public void sortingTest() {
+        em.persist(new Member(null, 100));
+        em.persist(new Member("member5", 100));
+        em.persist(new Member("member6", 100));
+
+        List<Member> result = query
+                .selectFrom(member)
+                .where(member.age.eq(100))
+                .orderBy(member.age.desc(), member.username.asc().nullsLast())
+                .fetch();
+
+        Member member5 = result.get(0);
+        Member member6 = result.get(1);
+        Member memberNull = result.get(2);
+
+        assertThat(member5.getUsername()).isEqualTo("member5");
+        assertThat(member6.getUsername()).isEqualTo("member6");
+        assertThat(memberNull.getUsername()).isNull();
     }
 }
