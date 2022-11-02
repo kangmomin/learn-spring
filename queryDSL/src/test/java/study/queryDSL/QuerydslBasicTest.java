@@ -1,5 +1,6 @@
 package study.querydsl;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,8 @@ import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
 
 import javax.persistence.EntityManager;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static study.querydsl.entity.QMember.*;
@@ -76,5 +79,29 @@ public class QuerydslBasicTest {
 
         assertThat(member1.getUsername()).isEqualTo("member1");
         assertThat(member1.getAge()).isEqualTo(10);
+    }
+
+    @Test
+    public void resultFetch() {
+        List<Member> fetch = query.selectFrom(member)
+                .fetch();
+
+        Member member1 = query.selectFrom(member)
+                .fetchOne();
+
+        Member member2 = query.selectFrom(member)
+                .fetchFirst();
+
+        // paging 관련
+        // 자동 성능 최적화를 위해 복잡해 졌을 땐 값이 다르게 나옴 => 그땐 따로 쿼리 2방 날림
+        QueryResults<Member> memberQueryResults = query.selectFrom(member)
+                .fetchResults();
+
+        memberQueryResults.getTotal();
+        List<Member> results = memberQueryResults.getResults();
+
+        // count 쿼리
+        long l = query.selectFrom(member)
+                .fetchCount();
     }
 }
