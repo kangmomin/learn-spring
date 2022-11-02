@@ -97,6 +97,7 @@ public class QuerydslBasicTest {
 
         // paging 관련
         // 자동 성능 최적화를 위해 복잡해 졌을 땐 값이 다르게 나옴 => 그땐 따로 쿼리 2방 날림
+        // select 문을 기반으로 돌리기에 join 등을 사용할 때 문제 발생
         QueryResults<Member> memberQueryResults = query.selectFrom(member)
                 .fetchResults();
 
@@ -133,5 +134,21 @@ public class QuerydslBasicTest {
         assertThat(member5.getUsername()).isEqualTo("member5");
         assertThat(member6.getUsername()).isEqualTo("member6");
         assertThat(memberNull.getUsername()).isNull();
+    }
+
+    @Test
+    public void paging1() {
+        QueryResults<Member> result = query
+                .selectFrom(member)
+                .orderBy(member.username.desc())
+                .offset(1)
+                .limit(2)
+                .fetchResults();
+
+        assertThat(result.getTotal()).isEqualTo(4);
+        assertThat(result.getLimit()).isEqualTo(2);
+        assertThat(result.getOffset()).isEqualTo(1);
+        assertThat(result.getResults().size()).isEqualTo(2);
+
     }
 }
