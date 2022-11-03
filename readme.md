@@ -52,8 +52,26 @@
 이럴땐 그냥 Service를 다시 만들든 해서 readOnly인 트랜잭션 안에서 돌아가게 한다.
 그 상태에서 DTO로 변환하는 것. 커넥션을 많이 쓴다면 ON(ex: ADMIN) 많이 쓴다면 OFF(ex: Member)
 
-**NoArgumentConstructure, groupBy, having**
+**groupBy, having**
 
 **join, fetch join, left join, right join**
+-
+- **Join**: \
+true true // true \
+true null // - \
+null true // -  
+
+
+- **left join**: \
+true null // true null \
+true true // true true \
+null true // - 
+
+
+- **right join**: \
+true null // - \
+true true // true true \
+null true // null true 
+
 
 **in**
