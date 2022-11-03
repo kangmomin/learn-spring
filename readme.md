@@ -55,3 +55,5 @@
 **NoArgumentConstructure, groupBy, having**
 
 **join, fetch join, left join, right join**
+
+**in**
