@@ -2,6 +2,7 @@ package study.querydsl;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -367,6 +368,37 @@ public class QuerydslBasicTest {
 
         for (Tuple member1 : result) {
             System.out.println("member1 = " + member1);
+        }
+    }
+
+    // 비추.. DB에서 들고올 때 값을 수정하기 보단 들고 와서 수정하는 편을 추천
+    @Test
+    public void basicCase() {
+        List<String> fetch = query.select(member.age
+                        .when(10).then("열살")
+                        .when(20).then("스무상")
+                        .otherwise("기타"))
+                .from(member)
+                .fetch();
+
+        for (String s : fetch) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    @Test
+    public void complexCase() {
+        List<String> result = query
+                .select(new CaseBuilder()
+                        .when(member.age.between(0, 20)).then("0 ~ 20살")
+                        .when(member.age.between(21, 30)).then("21 ~ 30살")
+                        .otherwise("기타")
+                )
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
         }
     }
 }
