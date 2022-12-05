@@ -2,6 +2,8 @@ package study.querydsl;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -10,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.querydsl.dto.MemberDto;
+import study.querydsl.dto.UserDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
@@ -426,4 +430,67 @@ public class QuerydslBasicTest {
         }
     }
 
+    // setter를 통해 값 주입
+    @Test
+    public void findDtoBySetter() {
+        List<MemberDto> fetch = query
+                .select(Projections.bean(MemberDto.class,
+                        member.username,
+                        member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto fetch1 : fetch) {
+            System.out.println("fetch1 = " + fetch1);
+        }
+    }
+
+    // 필드에 직접 값 주입
+    @Test
+    public void findDtoByField() {
+        List<MemberDto> fetch = query
+                .select(Projections.fields(MemberDto.class,
+                        member.username,
+                        member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto fetch1 : fetch) {
+            System.out.println("fetch1 = " + fetch1);
+        }
+    }
+
+    // 생성자를 통한 Dto 주입
+    @Test
+    public void findDtoByConstructor() {
+        List<MemberDto> fetch = query
+                .select(Projections.constructor(MemberDto.class,
+                        member.username,
+                        member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto fetch1 : fetch) {
+            System.out.println("fetch1 = " + fetch1);
+        }
+    }
+    // 이름 매칭
+    @Test
+    public void findUserDto() {
+        QMember memberSub = new QMember("memberSub");
+
+        List<UserDto> fetch = query
+                .select(Projections.constructor(UserDto.class,
+                        member.username.as("name"), // 별칭이 다를시엔 alias를 사용해서 이름 수정
+                        ExpressionUtils.as(JPAExpressions
+                                .select(memberSub.age.max())
+                                .from(memberSub), "age"
+                        ))) // 서브 쿼리에 마지막에 별칭을 줄 수 있음
+                .from(member)
+                .fetch();
+
+        for (UserDto fetch1 : fetch) {
+            System.out.println("fetch1 = " + fetch1);
+        }
+    }
 }
