@@ -1,6 +1,7 @@
 package study.querydsl.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -64,5 +65,37 @@ public class MemberRepository {
                 .leftJoin(member.team, team)
                 .where(builder)
                 .fetch();
+    }
+    public List<MemberTeamDto> searchWhere(MemberSearchCondition condition) {
+        return query
+                .select(new QMemberTeamDto(
+                        member.id.as("memberId"),
+                        member.username,
+                        member.age,
+                        team.id.as("teamId"),
+                        team.name.as("teamName")
+                ))
+                .from(member)
+                .leftJoin(member.team, team)
+                .where(
+                        usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageGoe(condition.getAgeGoe()),
+                        ageLoe(condition.getAgeLoe())
+                )
+                .fetch();
+    }
+
+    private BooleanExpression usernameEq(String username) {
+        return StringUtils.hasText(username) ? member.username.eq(username) : null;
+    }
+    private BooleanExpression teamNameEq(String teamName) {
+        return StringUtils.hasText(teamName) ? member.team.name.eq(teamName) : null;
+    }
+    private BooleanExpression ageGoe(Integer goe) {
+        return goe != null ? member.age.goe(goe) : null;
+    }
+    private BooleanExpression ageLoe(Integer loe) {
+        return loe != null ? member.age.loe(loe) : null;
     }
 }
