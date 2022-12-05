@@ -23,6 +23,7 @@ public class InitMember {
         initMemberService.init();
     }
 
+    @Component
     static class InitMemberService {
         @PersistenceContext
         private EntityManager em;
