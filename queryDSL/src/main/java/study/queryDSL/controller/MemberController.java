@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import study.querydsl.dto.MemberSearchCondition;
 import study.querydsl.dto.MemberTeamDto;
 import study.querydsl.repository.MemberRepository;
-import study.querydsl.repository.MemberRepositoryImpl;
 
 import java.util.List;
 
@@ -18,6 +17,6 @@ public class MemberController {
 
     @GetMapping("/v1/members")
     public List<MemberTeamDto> searchMemberV1(MemberSearchCondition condition) {
-        return memberRepository.searchWhere(condition);
+        return memberRepository.search(condition);
     }
 }
