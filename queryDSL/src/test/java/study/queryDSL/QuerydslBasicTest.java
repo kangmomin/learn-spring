@@ -3,7 +3,9 @@ package study.querydsl;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -505,5 +507,26 @@ public class QuerydslBasicTest {
         for (MemberDto memberDto : fetch) {
             System.out.println("memberDto = " + memberDto);
         }
+    }
+
+    // where 문에서 null은 무시됨
+    // Boolean builder보다 깔끔해 보기 좋음
+    @Test
+    public void searchMember() {
+        List<Member> member1 = query
+                .selectFrom(member)
+//                .where(userNameEq("member1"), ageEq(10))
+                .where(allEq("member1", 10)) // 남는 코드를 조립할 수도 있음
+                .fetch();
+    }
+
+    private BooleanExpression userNameEq(String userNameCond) {
+        return userNameCond == null ? null : member.username.eq(userNameCond);
+    }
+    private BooleanExpression ageEq(Integer ageCond) {
+        return ageCond == null ? null : member.age.eq(ageCond);
+    }
+    private BooleanExpression allEq(String userCond, Integer ageCond) {
+        return userNameEq(userCond).and(ageEq(ageCond));
     }
 }
