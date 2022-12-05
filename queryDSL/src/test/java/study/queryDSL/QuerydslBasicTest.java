@@ -529,4 +529,16 @@ public class QuerydslBasicTest {
     private BooleanExpression allEq(String userCond, Integer ageCond) {
         return userNameEq(userCond).and(ageEq(ageCond));
     }
+
+    @Test
+    public void bulkUpdate() {
+        long count = query
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        em.flush();
+        em.clear();
+    }
 }
